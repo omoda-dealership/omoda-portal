@@ -1,0 +1,23 @@
+{
+  "kind": "singleType",
+  "collectionName": "dealerships",
+  "info": {
+    "singularName": "dealership",
+    "pluralName": "dealerships",
+    "displayName": "Dealership"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "number": {
+      "type": "biginteger",
+      "required": true
+    }
+  }
+}
