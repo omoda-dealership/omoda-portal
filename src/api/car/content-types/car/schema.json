@@ -12,19 +12,8 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "model_name": {
-      "type": "string",
-      "default": "C5",
-      "required": true
-    },
-    "make_name": {
-      "type": "string",
-      "default": "Omoda",
-      "required": true
-    },
     "slug": {
       "type": "uid",
-      "targetField": "make_name",
       "required": true
     },
     "variant": {
@@ -124,6 +113,22 @@
         "SUV"
       ],
       "default": "SUV"
+    },
+    "model_name": {
+      "type": "enumeration",
+      "enum": [
+        "C5"
+      ],
+      "default": "C5",
+      "required": true
+    },
+    "make_name": {
+      "type": "enumeration",
+      "enum": [
+        "Omoda"
+      ],
+      "default": "Omoda",
+      "required": true
     }
   }
 }
