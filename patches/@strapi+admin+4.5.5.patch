@@ -1,0 +1,628 @@
+diff --git a/node_modules/@strapi/admin/admin/src/components/LeftMenu/index.js b/node_modules/@strapi/admin/admin/src/components/LeftMenu/index.js
+index 752f3a6..c35b410 100644
+--- a/node_modules/@strapi/admin/admin/src/components/LeftMenu/index.js
++++ b/node_modules/@strapi/admin/admin/src/components/LeftMenu/index.js
+@@ -1,242 +1,209 @@
+-import React, { useRef, useState } from 'react';
+-import styled from 'styled-components';
+-import PropTypes from 'prop-types';
+-import { useIntl } from 'react-intl';
+-import { NavLink as RouterNavLink, useLocation } from 'react-router-dom';
+-import { Divider } from '@strapi/design-system/Divider';
+-import {
+-  MainNav,
+-  NavBrand,
+-  NavSections,
+-  NavLink,
+-  NavSection,
+-  NavUser,
+-  NavCondense,
+-} from '@strapi/design-system/v2/MainNav';
+-import { FocusTrap } from '@strapi/design-system/FocusTrap';
+-import { Box } from '@strapi/design-system/Box';
+-import { Typography } from '@strapi/design-system/Typography';
+-import { Stack } from '@strapi/design-system/Stack';
+-import Write from '@strapi/icons/Write';
+-import Exit from '@strapi/icons/Exit';
+-import { auth, usePersistentState, useAppInfos, useTracking } from '@strapi/helper-plugin';
+-import useConfigurations from '../../hooks/useConfigurations';
++import React, { useRef, useState } from "react";
++import styled from "styled-components";
++import PropTypes from "prop-types";
++import { useIntl } from "react-intl";
++import { NavLink as RouterNavLink, useLocation } from "react-router-dom";
++import { Divider } from "@strapi/design-system/Divider";
++import { MainNav, NavBrand, NavSections, NavLink, NavSection, NavUser, NavCondense } from "@strapi/design-system/v2/MainNav";
++import { FocusTrap } from "@strapi/design-system/FocusTrap";
++import { Box } from "@strapi/design-system/Box";
++import { Typography } from "@strapi/design-system/Typography";
++import { Stack } from "@strapi/design-system/Stack";
++import Write from "@strapi/icons/Write";
++import Exit from "@strapi/icons/Exit";
++import { auth, usePersistentState, useAppInfos, useTracking } from "@strapi/helper-plugin";
++import useConfigurations from "../../hooks/useConfigurations";
+ 
+ const LinkUserWrapper = styled(Box)`
+-  width: ${150 / 16}rem;
+-  position: absolute;
+-  bottom: ${({ theme }) => theme.spaces[9]};
+-  left: ${({ theme }) => theme.spaces[5]};
++	width: ${150 / 16}rem;
++	position: absolute;
++	bottom: ${({ theme }) => theme.spaces[9]};
++	left: ${({ theme }) => theme.spaces[5]};
+ `;
+ 
+ const LinkUser = styled(RouterNavLink)`
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  text-decoration: none;
+-  padding: ${({ theme }) => `${theme.spaces[2]} ${theme.spaces[4]}`};
+-  border-radius: ${({ theme }) => theme.spaces[1]};
+-
+-  &:hover {
+-    background: ${({ theme, logout }) =>
+-      logout ? theme.colors.danger100 : theme.colors.primary100};
+-    text-decoration: none;
+-  }
+-
+-  svg {
+-    path {
+-      fill: ${({ theme }) => theme.colors.danger600};
+-    }
+-  }
++	display: flex;
++	justify-content: space-between;
++	align-items: center;
++	text-decoration: none;
++	padding: ${({ theme }) => `${theme.spaces[2]} ${theme.spaces[4]}`};
++	border-radius: ${({ theme }) => theme.spaces[1]};
++
++	&:hover {
++		background: ${({ theme, logout }) => (logout ? theme.colors.danger100 : theme.colors.primary100)};
++		text-decoration: none;
++	}
++
++	svg {
++		path {
++			fill: ${({ theme }) => theme.colors.danger600};
++		}
++	}
+ `;
+ 
+ const LeftMenu = ({ generalSectionLinks, pluginsSectionLinks }) => {
+-  const buttonRef = useRef();
+-  const [userLinksVisible, setUserLinksVisible] = useState(false);
+-  const {
+-    logos: { menu },
+-  } = useConfigurations();
+-  const [condensed, setCondensed] = usePersistentState('navbar-condensed', false);
+-  const { userDisplayName } = useAppInfos();
+-  const { formatMessage } = useIntl();
+-  const { trackUsage } = useTracking();
+-  const { pathname } = useLocation();
+-
+-  const initials = userDisplayName
+-    .split(' ')
+-    .map((name) => name.substring(0, 1))
+-    .join('')
+-    .substring(0, 2);
+-
+-  const handleToggleUserLinks = () => setUserLinksVisible((prev) => !prev);
+-
+-  const handleLogout = () => {
+-    auth.clearAppStorage();
+-    handleToggleUserLinks();
+-  };
+-
+-  const handleBlur = (e) => {
+-    if (
+-      !e.currentTarget.contains(e.relatedTarget) &&
+-      e.relatedTarget?.parentElement?.id !== 'main-nav-user-button'
+-    ) {
+-      setUserLinksVisible(false);
+-    }
+-  };
+-
+-  const handleClickOnLink = (destination = null) => {
+-    trackUsage('willNavigate', { from: pathname, to: destination });
+-  };
+-
+-  const menuTitle = formatMessage({
+-    id: 'app.components.LeftMenu.navbrand.title',
+-    defaultMessage: 'Strapi Dashboard',
+-  });
+-
+-  return (
+-    <MainNav condensed={condensed}>
+-      <NavBrand
+-        as={RouterNavLink}
+-        workplace={formatMessage({
+-          id: 'app.components.LeftMenu.navbrand.workplace',
+-          defaultMessage: 'Workplace',
+-        })}
+-        title={menuTitle}
+-        icon={
+-          <img
+-            src={menu.custom || menu.default}
+-            alt={formatMessage({
+-              id: 'app.components.LeftMenu.logo.alt',
+-              defaultMessage: 'Application logo',
+-            })}
+-          />
+-        }
+-      />
+-
+-      <Divider />
+-
+-      <NavSections>
+-        <NavLink
+-          as={RouterNavLink}
+-          to="/content-manager"
+-          icon={<Write />}
+-          onClick={() => handleClickOnLink('/content-manager')}
+-        >
+-          {formatMessage({ id: 'global.content-manager', defaultMessage: 'Content manager' })}
+-        </NavLink>
+-
+-        {pluginsSectionLinks.length > 0 ? (
+-          <NavSection
+-            label={formatMessage({
+-              id: 'app.components.LeftMenu.plugins',
+-              defaultMessage: 'Plugins',
+-            })}
+-          >
+-            {pluginsSectionLinks.map((link) => {
+-              const Icon = link.icon;
+-
+-              return (
+-                <NavLink
+-                  as={RouterNavLink}
+-                  to={link.to}
+-                  key={link.to}
+-                  icon={<Icon />}
+-                  onClick={() => handleClickOnLink(link.to)}
+-                >
+-                  {formatMessage(link.intlLabel)}
+-                </NavLink>
+-              );
+-            })}
+-          </NavSection>
+-        ) : null}
+-
+-        {generalSectionLinks.length > 0 ? (
+-          <NavSection
+-            label={formatMessage({
+-              id: 'app.components.LeftMenu.general',
+-              defaultMessage: 'General',
+-            })}
+-          >
+-            {generalSectionLinks.map((link) => {
+-              const LinkIcon = link.icon;
+-
+-              return (
+-                <NavLink
+-                  as={RouterNavLink}
+-                  badgeContent={
+-                    (link.notificationsCount > 0 && link.notificationsCount.toString()) || undefined
+-                  }
+-                  to={link.to}
+-                  key={link.to}
+-                  icon={<LinkIcon />}
+-                  onClick={() => handleClickOnLink(link.to)}
+-                >
+-                  {formatMessage(link.intlLabel)}
+-                </NavLink>
+-              );
+-            })}
+-          </NavSection>
+-        ) : null}
+-      </NavSections>
+-
+-      <NavUser
+-        id="main-nav-user-button"
+-        ref={buttonRef}
+-        onClick={handleToggleUserLinks}
+-        initials={initials}
+-      >
+-        {userDisplayName}
+-      </NavUser>
+-      {userLinksVisible && (
+-        <LinkUserWrapper
+-          onBlur={handleBlur}
+-          padding={1}
+-          shadow="tableShadow"
+-          background="neutral0"
+-          hasRadius
+-        >
+-          <FocusTrap onEscape={handleToggleUserLinks}>
+-            <Stack spacing={0}>
+-              <LinkUser tabIndex={0} onClick={handleToggleUserLinks} to="/me">
+-                <Typography>
+-                  {formatMessage({
+-                    id: 'global.profile',
+-                    defaultMessage: 'Profile',
+-                  })}
+-                </Typography>
+-              </LinkUser>
+-              <LinkUser tabIndex={0} onClick={handleLogout} logout="logout" to="/auth/login">
+-                <Typography textColor="danger600">
+-                  {formatMessage({
+-                    id: 'app.components.LeftMenu.logout',
+-                    defaultMessage: 'Logout',
+-                  })}
+-                </Typography>
+-                <Exit />
+-              </LinkUser>
+-            </Stack>
+-          </FocusTrap>
+-        </LinkUserWrapper>
+-      )}
+-
+-      <NavCondense onClick={() => setCondensed((s) => !s)}>
+-        {condensed
+-          ? formatMessage({
+-              id: 'app.components.LeftMenu.expand',
+-              defaultMessage: 'Expand the navbar',
+-            })
+-          : formatMessage({
+-              id: 'app.components.LeftMenu.collapse',
+-              defaultMessage: 'Collapse the navbar',
+-            })}
+-      </NavCondense>
+-    </MainNav>
+-  );
++	const buttonRef = useRef();
++	const [userLinksVisible, setUserLinksVisible] = useState(false);
++	const {
++		logos: { menu },
++	} = useConfigurations();
++	const [condensed, setCondensed] = usePersistentState("navbar-condensed", false);
++	const { userDisplayName } = useAppInfos();
++	const { formatMessage } = useIntl();
++	const { trackUsage } = useTracking();
++	const { pathname } = useLocation();
++
++	const initials = userDisplayName
++		.split(" ")
++		.map((name) => name.substring(0, 1))
++		.join("")
++		.substring(0, 2);
++
++	const handleToggleUserLinks = () => setUserLinksVisible((prev) => !prev);
++
++	const handleLogout = () => {
++		auth.clearAppStorage();
++		handleToggleUserLinks();
++	};
++
++	const handleBlur = (e) => {
++		if (!e.currentTarget.contains(e.relatedTarget) && e.relatedTarget?.parentElement?.id !== "main-nav-user-button") {
++			setUserLinksVisible(false);
++		}
++	};
++
++	const handleClickOnLink = (destination = null) => {
++		trackUsage("willNavigate", { from: pathname, to: destination });
++	};
++
++	const menuTitle = formatMessage({
++		id: "app.components.LeftMenu.navbrand.title",
++		defaultMessage: "Strapi Dashboard",
++	});
++
++	return (
++		<MainNav condensed={condensed}>
++			<NavBrand
++				as={RouterNavLink}
++				workplace={formatMessage({
++					id: "app.components.LeftMenu.navbrand.workplace",
++					defaultMessage: "Workplace",
++				})}
++				title={menuTitle}
++				icon={
++					<img
++						src={menu.custom || menu.default}
++						alt={formatMessage({
++							id: "app.components.LeftMenu.logo.alt",
++							defaultMessage: "Application logo",
++						})}
++					/>
++				}
++			/>
++
++			<Divider />
++
++			<NavSections>
++				<NavLink as={RouterNavLink} to="/content-manager" icon={<Write />} onClick={() => handleClickOnLink("/content-manager")}>
++					{formatMessage({ id: "global.content-manager", defaultMessage: "Content manager" })}
++				</NavLink>
++
++				{pluginsSectionLinks.length > 0 ? (
++					<NavSection
++						label={formatMessage({
++							id: "app.components.LeftMenu.plugins",
++							defaultMessage: "Plugins",
++						})}
++					>
++						{pluginsSectionLinks.map((link) => {
++							const Icon = link.icon;
++
++							return (
++								<NavLink as={RouterNavLink} to={link.to} key={link.to} icon={<Icon />} onClick={() => handleClickOnLink(link.to)}>
++									{formatMessage(link.intlLabel)}
++								</NavLink>
++							);
++						})}
++					</NavSection>
++				) : null}
++
++				{generalSectionLinks.length > 0 ? (
++					<NavSection
++						label={formatMessage({
++							id: "app.components.LeftMenu.general",
++							defaultMessage: "General",
++						})}
++					>
++						{generalSectionLinks.map((link, index) => {
++							if (index === 2) {
++								const LinkIcon = link.icon;
++
++								return (
++									<NavLink
++										as={RouterNavLink}
++										badgeContent={(link.notificationsCount > 0 && link.notificationsCount.toString()) || undefined}
++										to={link.to}
++										key={link.to}
++										icon={<LinkIcon />}
++										onClick={() => handleClickOnLink(link.to)}
++									>
++										{formatMessage(link.intlLabel)}
++									</NavLink>
++								);
++							}
++							return null;
++						})}
++					</NavSection>
++				) : null}
++			</NavSections>
++
++			<NavUser id="main-nav-user-button" ref={buttonRef} onClick={handleToggleUserLinks} initials={initials}>
++				{userDisplayName}
++			</NavUser>
++			{userLinksVisible && (
++				<LinkUserWrapper onBlur={handleBlur} padding={1} shadow="tableShadow" background="neutral0" hasRadius>
++					<FocusTrap onEscape={handleToggleUserLinks}>
++						<Stack spacing={0}>
++							<LinkUser tabIndex={0} onClick={handleToggleUserLinks} to="/me">
++								<Typography>
++									{formatMessage({
++										id: "global.profile",
++										defaultMessage: "Profile",
++									})}
++								</Typography>
++							</LinkUser>
++							<LinkUser tabIndex={0} onClick={handleLogout} logout="logout" to="/auth/login">
++								<Typography textColor="danger600">
++									{formatMessage({
++										id: "app.components.LeftMenu.logout",
++										defaultMessage: "Logout",
++									})}
++								</Typography>
++								<Exit />
++							</LinkUser>
++						</Stack>
++					</FocusTrap>
++				</LinkUserWrapper>
++			)}
++
++			<NavCondense onClick={() => setCondensed((s) => !s)}>
++				{condensed
++					? formatMessage({
++							id: "app.components.LeftMenu.expand",
++							defaultMessage: "Expand the navbar",
++					  })
++					: formatMessage({
++							id: "app.components.LeftMenu.collapse",
++							defaultMessage: "Collapse the navbar",
++					  })}
++			</NavCondense>
++		</MainNav>
++	);
+ };
+ 
+ LeftMenu.propTypes = {
+-  generalSectionLinks: PropTypes.array.isRequired,
+-  pluginsSectionLinks: PropTypes.array.isRequired,
++	generalSectionLinks: PropTypes.array.isRequired,
++	pluginsSectionLinks: PropTypes.array.isRequired,
+ };
+ 
+ export default LeftMenu;
+diff --git a/node_modules/@strapi/admin/admin/src/pages/Admin/index.js b/node_modules/@strapi/admin/admin/src/pages/Admin/index.js
+index 13676c4..1f7c3fd 100644
+--- a/node_modules/@strapi/admin/admin/src/pages/Admin/index.js
++++ b/node_modules/@strapi/admin/admin/src/pages/Admin/index.js
+@@ -94,12 +94,12 @@ const Admin = () => {
+             {routes}
+             <Route path="/settings/:settingId" component={SettingsPage} />
+             <Route path="/settings" component={SettingsPage} exact />
+-            <Route path="/marketplace">
++            {/* <Route path="/marketplace">
+               <MarketplacePage />
+-            </Route>
+-            <Route path="/list-plugins" exact>
++            </Route> */}
++            {/* <Route path="/list-plugins" exact>
+               <InstalledPluginsPage />
+-            </Route>
++            </Route> */}
+             <Route path="/404" component={NotFoundPage} />
+             <Route path="/500" component={InternalErrorPage} />
+             <Route path="" component={NotFoundPage} />
+diff --git a/node_modules/@strapi/admin/admin/src/pages/HomePage/ContentBlocks.js b/node_modules/@strapi/admin/admin/src/pages/HomePage/ContentBlocks.js
+index 9feb7bb..bcffc1b 100644
+--- a/node_modules/@strapi/admin/admin/src/pages/HomePage/ContentBlocks.js
++++ b/node_modules/@strapi/admin/admin/src/pages/HomePage/ContentBlocks.js
+@@ -21,81 +21,40 @@ const ContentBlocks = () => {
+   };
+ 
+   return (
+-    <Stack spacing={5}>
++  <Stack spacing={5}>
+       <BlockLink
+-        href="https://strapi.io/resource-center"
+-        target="_blank"
+-        rel="noopener noreferrer nofollow"
+-        onClick={() => handleClick('didClickonReadTheDocumentationSection')}
+-      >
+-        <ContentBox
+-          title={formatMessage({
+-            id: 'global.documentation',
+-            defaultMessage: 'Documentation',
+-          })}
+-          subtitle={formatMessage({
+-            id: 'app.components.BlockLink.documentation.content',
+-            defaultMessage: 'Discover the essential concepts, guides and instructions.',
+-          })}
+-          icon={<InformationSquare />}
+-          iconBackground="primary100"
+-        />
+-      </BlockLink>
+-      <BlockLink
+-        href="https://strapi.io/starters"
+-        target="_blank"
+-        rel="noopener noreferrer nofollow"
+-        onClick={() => handleClick('didClickonCodeExampleSection')}
++        href="/content-manager"
+       >
+         <ContentBox
+           title={formatMessage({
+             id: 'app.components.BlockLink.code',
+-            defaultMessage: 'Code example',
++            defaultMessage: 'Content Manager',
+           })}
+           subtitle={formatMessage({
+             id: 'app.components.BlockLink.code.content',
+-            defaultMessage: 'Learn by using ready-made starters for your projects.',
++            defaultMessage: 'Upload and manage your website content and stock.',
+           })}
+-          icon={<CodeSquare />}
+-          iconBackground="warning100"
+-        />
+-      </BlockLink>
+-      <BlockLink
+-        href="https://strapi.io/blog/categories/tutorials"
+-        target="_blank"
+-        rel="noopener noreferrer nofollow"
+-        onClick={() => handleClick('didClickonTutorialSection')}
+-      >
+-        <ContentBox
+-          title={formatMessage({
+-            id: 'app.components.BlockLink.tutorial',
+-            defaultMessage: 'Tutorials',
+-          })}
+-          subtitle={formatMessage({
+-            id: 'app.components.BlockLink.tutorial.content',
+-            defaultMessage: 'Follow step-by-step instructions to use and customize Strapi.',
+-          })}
+-          icon={<PlaySquare />}
+-          iconBackground="secondary100"
++          icon={<FeatherSquare />}
++          iconBackground="primary100"
+         />
+       </BlockLink>
+       <BlockLink
+-        href="https://strapi.io/blog"
++        href="#"
+         target="_blank"
+         rel="noopener noreferrer nofollow"
+-        onClick={() => handleClick('didClickonBlogSection')}
++        onClick={() => handleClick('didClickonReadTheDocumentationSection')}
+       >
+         <ContentBox
+           title={formatMessage({
+-            id: 'app.components.BlockLink.blog',
+-            defaultMessage: 'Blog',
++            id: 'global.documentation',
++            defaultMessage: 'Documentation',
+           })}
+           subtitle={formatMessage({
+-            id: 'app.components.BlockLink.blog.content',
+-            defaultMessage: 'Read the latest news about Strapi and the ecosystem.',
++            id: 'app.components.BlockLink.documentation.content',
++            defaultMessage: 'Discover the essential concepts, guides and instructions.',
+           })}
+-          icon={<FeatherSquare />}
+-          iconBackground="alternative100"
++          icon={<InformationSquare />}
++          iconBackground="primary100"
+         />
+       </BlockLink>
+     </Stack>
+diff --git a/node_modules/@strapi/admin/admin/src/pages/HomePage/HomeHeader.js b/node_modules/@strapi/admin/admin/src/pages/HomePage/HomeHeader.js
+index a846220..50becfd 100644
+--- a/node_modules/@strapi/admin/admin/src/pages/HomePage/HomeHeader.js
++++ b/node_modules/@strapi/admin/admin/src/pages/HomePage/HomeHeader.js
+@@ -40,7 +40,7 @@ const HomeHeader = ({ hasCreatedContentType, onCreateCT }) => {
+               ? formatMessage({
+                   id: 'app.components.HomePage.welcomeBlock.content.again',
+                   defaultMessage:
+-                    'We hope you are making progress on your project! Feel free to read the latest news about Strapi. We are giving our best to improve the product based on your feedback.',
++                    'Welcome to the Dealership Portal! Our team is dedicated to enhancing the product based on your valuable feedback, ensuring you have the best possible experience while managing your dealership&apos;s online presence. Let&apos;s embark on this journey together, and make the most of the powerful tools and features available within the portal!',
+                 })
+               : formatMessage({
+                   id: 'app.components.HomePage.welcomeBlock.content',
+@@ -48,21 +48,6 @@ const HomeHeader = ({ hasCreatedContentType, onCreateCT }) => {
+                     'Congrats! You are logged as the first administrator. To discover the powerful features provided by Strapi, we recommend you to create your first Content type!',
+                 })}
+           </WordWrap>
+-          {hasCreatedContentType ? (
+-            <Link isExternal href="https://strapi.io/blog">
+-              {formatMessage({
+-                id: 'app.components.HomePage.button.blog',
+-                defaultMessage: 'See more on the blog',
+-              })}
+-            </Link>
+-          ) : (
+-            <Button size="L" onClick={onCreateCT} endIcon={<ArrowRight />}>
+-              {formatMessage({
+-                id: 'app.components.HomePage.create',
+-                defaultMessage: 'Create your first Content type',
+-              })}
+-            </Button>
+-          )}
+         </StackCustom>
+       </Box>
+     </div>
+diff --git a/node_modules/@strapi/admin/admin/src/pages/HomePage/index.js b/node_modules/@strapi/admin/admin/src/pages/HomePage/index.js
+index 68a2188..27a85da 100644
+--- a/node_modules/@strapi/admin/admin/src/pages/HomePage/index.js
++++ b/node_modules/@strapi/admin/admin/src/pages/HomePage/index.js
+@@ -59,7 +59,7 @@ const HomePage = () => {
+   }
+ 
+   return (
+-    <Layout>
++<Layout>
+       <FormattedMessage id="HomePage.helmet.title" defaultMessage="Homepage">
+         {(title) => <Helmet title={title[0]} />}
+       </FormattedMessage>
+@@ -76,14 +76,11 @@ const HomePage = () => {
+               />
+             </GridItem>
+           </Grid> 
+-          <Grid gap={6}>
++          {/* <Grid gap={6}>
+             <GridItem col={8} s={12}>
+               {showGuidedTour ? <GuidedTourHomepage /> : <ContentBlocks />}
+             </GridItem>
+-            <GridItem col={4} s={12}>
+-              <SocialLinks />
+-            </GridItem>
+-          </Grid>
++          </Grid> */}
+         </Box>
+       </Main>
+     </Layout>

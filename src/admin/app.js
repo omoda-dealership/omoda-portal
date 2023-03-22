@@ -49,7 +49,7 @@ export default {
     },
     translations: {
       en: {
-        "app.components.HomePage.welcome.again": "Welcome Omoda!",
+        "app.components.HomePage.welcome.again": "Welcome Omoda Dealership!",
         "app.components.LeftMenu.navbrand.title": "Dashboard"
       },
     },
