@@ -19,6 +19,31 @@
     "number": {
       "type": "biginteger",
       "required": true
+    },
+    "location": {
+      "type": "string",
+      "required": true,
+      "default": "93A Longmarket Street, Cape Town"
+    },
+    "province": {
+      "type": "string",
+      "required": true,
+      "default": "Western Cape"
+    },
+    "directions": {
+      "type": "string",
+      "required": true,
+      "default": "https://goo.gl/maps/GUCR2vzjWfZoxtfm7"
+    },
+    "longitude": {
+      "type": "string",
+      "required": true,
+      "default": "18.4232"
+    },
+    "latitude": {
+      "type": "string",
+      "required": true,
+      "default": "-33.9258"
     }
   }
 }
