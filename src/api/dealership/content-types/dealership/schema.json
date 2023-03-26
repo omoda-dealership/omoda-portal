@@ -17,7 +17,7 @@
       "required": true
     },
     "number": {
-      "type": "biginteger",
+      "type": "string",
       "required": true
     },
     "location": {
