@@ -129,6 +129,11 @@
       ],
       "default": "Omoda",
       "required": true
+    },
+    "stock_number": {
+      "type": "string",
+      "required": true,
+      "unique": true
     }
   }
 }
