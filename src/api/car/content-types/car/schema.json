@@ -49,13 +49,13 @@
     "colour": {
       "type": "enumeration",
       "enum": [
-        "Silver Premium Double Colour",
-        "Green Premium Double Colour",
-        "Black",
-        "Dark Blue",
-        "Gray Premium",
+        "Spiritual Silver",
+        "Phantom Gray",
+        "Fantasy Green",
         "Vanilla Blue",
-        "White Premium Double Colour"
+        "Dark Black",
+        "Dark Blue",
+        "Khaki White"
       ],
       "required": true
     },
