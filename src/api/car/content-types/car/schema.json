@@ -14,7 +14,7 @@
   "attributes": {
     "model_name": {
       "type": "string",
-      "required": true,
+      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -23,7 +23,7 @@
     },
     "variant": {
       "type": "string",
-      "required": true,
+      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -31,7 +31,7 @@
       }
     },
     "price": {
-      "required": true,
+      "required": false,
       "type": "integer",
       "pluginOptions": {
         "i18n": {
@@ -41,7 +41,7 @@
     },
     "mileage": {
       "type": "integer",
-      "required": true,
+      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -50,7 +50,7 @@
     },
     "seats": {
       "type": "string",
-      "required": true,
+      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -59,7 +59,7 @@
     },
     "engine": {
       "type": "string",
-      "required": true,
+      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -68,7 +68,7 @@
     },
     "body_type": {
       "type": "string",
-      "required": true,
+      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -77,7 +77,7 @@
     },
     "exterior_colour": {
       "type": "string",
-      "required": true,
+      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -85,10 +85,8 @@
       }
     },
     "cover": {
-      "type": "media",
-      "multiple": false,
-      "required": true,
-      "allowedTypes": ["images"],
+      "type": "string",
+      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -98,7 +96,7 @@
     "fuelType": {
       "type": "enumeration",
       "enum": ["Petrol", "Diesel", "Electric", "Hybrid"],
-      "required": true,
+      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -117,7 +115,7 @@
         "Yellow",
         "Multicolour"
       ],
-      "required": true,
+      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -131,7 +129,7 @@
         }
       },
       "type": "uid",
-      "required": true,
+      "required": false,
       "targetField": "model_name"
     },
     "year": {
@@ -141,7 +139,7 @@
         }
       },
       "type": "integer",
-      "required": true
+      "required": false
     },
     "transmission": {
       "pluginOptions": {
@@ -151,7 +149,7 @@
       },
       "type": "enumeration",
       "enum": ["Manual", "Automatic"],
-      "required": true
+      "required": false
     },
     "body_type_category": {
       "pluginOptions": {
@@ -170,7 +168,7 @@
         "Panel Van",
         "Bakkie"
       ],
-      "required": true
+      "required": false
     },
     "door": {
       "pluginOptions": {
@@ -179,13 +177,11 @@
         }
       },
       "type": "string",
-      "required": true
+      "required": false
     },
     "image_slider": {
-      "type": "media",
-      "multiple": true,
+      "type": "json",
       "required": false,
-      "allowedTypes": ["images"],
       "pluginOptions": {
         "i18n": {
           "localized": true
