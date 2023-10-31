@@ -204,8 +204,9 @@
       },
       "type": "string"
     },
-    "coverr": {
-      "type": "json"
+    "stocknumber": {
+      "type": "string",
+      "unique": true
     }
   }
 }
