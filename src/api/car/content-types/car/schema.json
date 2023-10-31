@@ -203,6 +203,9 @@
         }
       },
       "type": "string"
+    },
+    "coverr": {
+      "type": "json"
     }
   }
 }
