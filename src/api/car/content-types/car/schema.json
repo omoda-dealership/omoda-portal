@@ -85,7 +85,7 @@
       }
     },
     "cover": {
-      "type": "string",
+      "type": "text",
       "required": false,
       "pluginOptions": {
         "i18n": {
@@ -95,7 +95,12 @@
     },
     "fuelType": {
       "type": "enumeration",
-      "enum": ["Petrol", "Diesel", "Electric", "Hybrid"],
+      "enum": [
+        "Petrol",
+        "Diesel",
+        "Electric",
+        "Hybrid"
+      ],
       "required": false,
       "pluginOptions": {
         "i18n": {
@@ -148,7 +153,10 @@
         }
       },
       "type": "enumeration",
-      "enum": ["Manual", "Automatic"],
+      "enum": [
+        "Manual",
+        "Automatic"
+      ],
       "required": false
     },
     "body_type_category": {
